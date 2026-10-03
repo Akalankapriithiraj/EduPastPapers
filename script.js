@@ -265,44 +265,190 @@ function editPaper(id) {
 }
 async function savePaper(event) {
   event.preventDefault();
-  if (!currentUser || !adminChecked) { setMessage("paperFormMessage","Please sign in as admin first.",true); return; }
-  const id=$("editPaperId").value;
-  const existing=papers.find(p=>String(p.id)===String(id));
-  const title=$("paperTitle").value.trim(), subject=$("paperSubject").value;
-  const year=Number($("paperYear").value), level=$("paperLevel").value;
-  const language=$("paperLanguage").value, description=$("paperDescription").value.trim();
-  const file=$("paperFile").files[0];
-  if (!title || !subject || !year) { setMessage("paperFormMessage","Please fill all required fields.",true); return; }
-  if (file && (file.type!=="application/pdf" && !file.name.toLowerCase().endsWith(".pdf"))) {
-    setMessage("paperFormMessage","Please choose a PDF file.",true); return;
+
+  if (!currentUser || !adminChecked) {
+    setMessage(
+      "paperFormMessage",
+      "Please sign in as admin first.",
+      true
+    );
+    return;
   }
+
+  const id = $("editPaperId").value;
+  const existing = papers.find(
+    p => String(p.id) === String(id)
+  );
+
+  const title = $("paperTitle").value.trim();
+  const subject = $("paperSubject").value;
+
+  const year = Number($("paperYear").value);
+  const level = $("paperLevel").value;
+  const language = $("paperLanguage").value;
+  const description =
+    $("paperDescription").value.trim();
+
+  const file = $("paperFile").files[0];
+
+  if (!title || !subject || !year) {
+    setMessage(
+      "paperFormMessage",
+      "Please fill all required fields.",
+      true
+    );
+    return;
+  }
+
+  // Find selected subject
+  const selectedSubject = subjects.find(
+    s => String(s.id) === String(subject)
+  );
+
+  if (!selectedSubject) {
+    setMessage(
+      "paperFormMessage",
+      "Please select a valid subject.",
+      true
+    );
+    return;
+  }
+
+  if (
+    file &&
+    file.type !== "application/pdf" &&
+    !file.name.toLowerCase().endsWith(".pdf")
+  ) {
+    setMessage(
+      "paperFormMessage",
+      "Please choose a PDF file.",
+      true
+    );
+    return;
+  }
+
   if (file && file.size > 20 * 1024 * 1024) {
-    setMessage("paperFormMessage","PDF must be 20 MB or smaller.",true); return;
+    setMessage(
+      "paperFormMessage",
+      "PDF must be 20 MB or smaller.",
+      true
+    );
+    return;
   }
-  setMessage("paperFormMessage","Saving...");
-  let filePath=existing?.file_path || "";
+
+  setMessage("paperFormMessage", "Saving...");
+
+  let filePath = existing?.file_path || "";
+
   if (file) {
-    filePath=`papers/${crypto.randomUUID()}-${safeFileName(file.name)}`;
-    const {error:uploadError}=await supabase.storage.from("past-papers").upload(filePath,file,{contentType:"application/pdf",upsert:false});
-    if (uploadError) { setMessage("paperFormMessage",`Upload failed: ${uploadError.message}`,true); return; }
-    if (existing?.file_path) await supabase.storage.from("past-papers").remove([existing.file_path]);
+    filePath =
+      `papers/${crypto.randomUUID()}-${safeFileName(file.name)}`;
+
+    const {
+      error: uploadError
+    } = await supabase.storage
+      .from("past-papers")
+      .upload(
+        filePath,
+        file,
+        {
+          contentType: "application/pdf",
+          upsert: false
+        }
+      );
+
+    if (uploadError) {
+      setMessage(
+        "paperFormMessage",
+        `Upload failed: ${uploadError.message}`,
+        true
+      );
+      return;
+    }
+
+    if (existing?.file_path) {
+      await supabase.storage
+        .from("past-papers")
+        .remove([existing.file_path]);
+    }
+
   } else if (!existing) {
-    setMessage("paperFormMessage","Choose a PDF file when adding a new paper.",true); return;
+
+    setMessage(
+      "paperFormMessage",
+      "Choose a PDF file when adding a new paper.",
+      true
+    );
+
+    return;
   }
-  const payload={title,subject_id:Number(subject),year,level,language,description:description||`${level} • ${subjects.find(s=>String(s.id)===subject)?.name || subject}`,file_path:filePath,is_published:true};
+
+  // Save paper
+  const payload = {
+    title: title,
+
+    // IMPORTANT
+    subject_id: selectedSubject.id,
+
+    year: year,
+    level: level,
+    language: language,
+
+    description:
+      description ||
+      `${level} • ${selectedSubject.name}`,
+
+    file_path: filePath,
+
+    is_published: true
+  };
+
   let result;
+
   if (existing) {
-    result=await supabase.from("papers").update(payload).eq("id",Number(existing.id));
+
+    result = await supabase
+      .from("papers")
+      .update(payload)
+      .eq("id", Number(existing.id));
+
   } else {
-    result=await supabase.from("papers").insert(payload);
+
+    result = await supabase
+      .from("papers")
+      .insert(payload);
   }
+
   if (result.error) {
-    if (file && filePath) await supabase.storage.from("past-papers").remove([filePath]);
-    setMessage("paperFormMessage",`Could not save paper: ${result.error.message}`,true); return;
+
+    if (file && filePath) {
+      await supabase.storage
+        .from("past-papers")
+        .remove([filePath]);
+    }
+
+    setMessage(
+      "paperFormMessage",
+      `Could not save paper: ${result.error.message}`,
+      true
+    );
+
+    return;
   }
-  setMessage("paperFormMessage","Saved successfully.");
-  showToast(existing ? "Paper updated successfully." : "New past paper added.");
+
+  setMessage(
+    "paperFormMessage",
+    "Saved successfully."
+  );
+
+  showToast(
+    existing
+      ? "Paper updated successfully."
+      : "New past paper added."
+  );
+
   resetPaperForm();
+
   await loadData();
 }
 async function deletePaper(id) {
