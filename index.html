@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Find and download educational past papers.">
+    <title>EduPast Papers</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header class="header"><a class="logo" href="#home"><span class="logo-mark">E</span> EduPast
+            <b>Papers</b></a><button id="menuToggle" class="menu-toggle" aria-label="Open menu">☰</button>
+        <nav id="nav"><a href="#home">Home</a><a href="#papers">Past Papers</a><a href="#subjects">Subjects</a><a
+                href="#about">About</a><button id="themeToggle" class="small-btn">☾ Theme</button><button id="adminOpen"
+                class="small-btn admin-nav">⚙ Admin</button></nav>
+    </header>
+    <main>
+        <section id="home" class="hero">
+            <div><span class="eyebrow">YOUR FREE STUDY COMPANION</span>
+                <h1>Prepare smarter.<br><span>Succeed together.</span></h1>
+                <p>Find past papers, practise with confidence, and take the next step towards your academic goals.</p>
+                <div class="hero-actions"><a class="btn primary" href="#papers">Explore past papers →</a><a
+                        class="btn outline" href="#subjects">Browse subjects</a></div>
+                <div class="hero-note">✓ Easy to find　 ✓ Simple to download　 ✓ Student friendly</div>
+            </div>
+            <div class="hero-art">
+                <div class="art-card back"><span class="pdf">PDF</span>
+                    <div class="art-cardbacktext"><h3>A/L Papers<br>O/L Papers</h3></div>
+                    <div class="progress1"><span></span></div>
+                    <div class="progress2"><span></span></div>
+
+                   // <div class="line wide"></div>
+                    //<div class="line"></div>
+                    
+                </div>
+                <div class="art-card front">
+                    <div class="book-icon">▤</div><small>YOUR NEXT A+</small>
+                    <h3>Keep learning.<br>Keep growing.</h3>
+                    <div class="progress"><span></span></div>
+                    <p>One paper at a time</p>
+                </div><span class="star">✦</span>
+            </div>
+        </section>
+        <section class="stats wrap">
+            <div><strong id="paperCount">0</strong><span>Past papers</span></div>
+            <div><strong id="subjectCount">0</strong><span>Subjects</span></div>
+            <div><strong id="downloadCount">0</strong><span>Downloads this session</span></div>
+            <div><strong id="savedCount">0</strong><span>Saved papers</span></div>
+        </section>
+        <section id="papers" class="wrap section">
+            <div class="section-heading">
+                <div><small>THE PAPER LIBRARY</small>
+                    <h2>Find your next <span>practice paper.</span></h2>
+                    <p>Search by subject, exam year, or paper title.</p>
+                </div><span class="pill">● Study library</span>
+            </div>
+            <div class="filters"><input id="search" type="search" placeholder="Search papers, subjects, keywords..."
+                    aria-label="Search papers">
+                <div class="filter-grid"><label>Subject<select id="subjectFilter">
+                            <option value="">All subjects</option>
+                        </select></label><label>Year<select id="yearFilter">
+                            <option value="">All years</option>
+                        </select></label><label>Level<select id="levelFilter">
+                            <option value="">All levels</option>
+                            <option>O/L</option>
+                            <option>A/L</option>
+                            <option>University</option>
+                            <option>Other</option>
+                        </select></label><label>Sort<select id="sortFilter">
+                            <option value="newest">Newest first</option>
+                            <option value="oldest">Oldest first</option>
+                            <option value="title">Title A–Z</option>
+                            <option value="downloads">Most downloaded</option>
+                        </select></label><button id="clearFilters" class="text-btn">Clear filters ↺</button></div>
+            </div>
+            <div class="results-line"><span id="resultsText">Loading papers...</span></div>
+            <div id="paperGrid" class="paper-grid"></div>
+            <div id="emptyState" class="empty hidden">
+                <h3>No papers found</h3>
+                <p>Try another keyword or clear your filters.</p><button id="emptyClear" class="btn primary">Clear
+                    filters</button>
+            </div>
+        </section>
+        <section id="subjects" class="subject-section">
+            <div class="wrap section">
+                <div class="section-heading">
+                    <div><small>EXPLORE BY SUBJECT</small>
+                        <h2>What are you <span>studying?</span></h2>
+                        <p>Choose a subject to find related papers.</p>
+                    </div>
+                </div>
+                <div id="subjectGrid" class="subject-grid"></div>
+            </div>
+        </section>
+        <section id="bookmarks" class="wrap section">
+            <div class="section-heading">
+                <div><small>YOUR PERSONAL COLLECTION</small>
+                    <h2>Saved <span>for later.</span></h2>
+                    <p>Keep your important practice papers close.</p>
+                </div>
+            </div>
+            <div id="bookmarkGrid" class="paper-grid"></div>
+            <div id="bookmarkEmpty" class="empty">No saved papers yet. Click ♡ on a paper to save it.</div>
+        </section>
+        <section id="about" class="about">
+            <div class="wrap about-inner">
+            <div class="bottom_details_left">
+                <div><small>MADE FOR LEARNERS</small>
+                    <h2>Small steps today.<br><span>Big goals tomorrow.</span></h2>
+                    <p>EduPast Papers helps students organise exam practice in one simple place.</p>
+                </div>
+
+                <a class="btn primary" href="#papers">Start practising →</a>
+            </div>
+            <div class="bottom_details_rigth">
+                <h3>Contact us</h3>
+                <p>📞 +94 72 466 2431</p>
+                <p>✉️ akalankaedu2025@gmail.com</p>
+                <p>📍 Kurunegala, Sri Lanka</p>
+            </div>
+            </div>
+
+        </section>
+    </main>
+    <footer class="footer"><b>EduPast Papers</b>
+        <p>Learn Today. Practise Yesterday's Papers. Succeed Tomorrow.</p><span>© <span id="yearNow"></span> EduPast
+            Papers</span>
+    </footer>
+    <div id="pdfModal" class="modal hidden" role="dialog" aria-modal="true">
+        <div class="backdrop" data-close></div>
+        <div class="modal-box">
+            <div class="modal-head">
+                <h2 id="previewTitle">Paper preview</h2><button class="icon-btn" data-close
+                    aria-label="Close">×</button>
+            </div>
+            <div id="previewContent" class="preview-content"></div>
+            <div class="modal-actions"><a id="previewDownload" class="btn primary" href="#" download>↓ Download
+                    PDF</a><button class="btn outline" data-close>Close</button></div>
+        </div>
+    </div>
+    <div id="adminModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="adminTitle">
+        <div class="backdrop" data-admin-close></div>
+        <div class="modal-box admin-box">
+            <div class="modal-head">
+                <div><small>CONTENT MANAGEMENT</small>
+                    <h2 id="adminTitle">Admin dashboard</h2>
+                </div><button class="icon-btn" data-admin-close aria-label="Close">×</button>
+            </div>
+            <div id="adminLogin">
+                <p class="hint">Secure admin sign-in. Use the email address and password of an admin account created
+                    in Supabase Authentication.</p>
+                <label>Admin email<input id="adminEmail" type="email" autocomplete="username"
+                    placeholder="admin@example.com"></label>
+                <label>Admin password<input id="adminPassword" type="password"
+                    autocomplete="current-password" placeholder="Enter your password"></label>
+                <button id="adminLoginBtn" class="btn primary full">Open dashboard</button>
+                <p id="loginError" class="error"></p>
+            </div>
+            <div id="adminDashboard" class="hidden">
+                <div class="admin-tabs"><button class="tab active" data-tab="paperAdmin">Manage papers</button><button
+                        class="tab" data-tab="subjectAdmin">Manage subjects</button></div>
+                <section id="paperAdmin" class="admin-pane">
+                    <h3 id="paperFormTitle">Add a new past paper</h3>
+                    <form id="paperForm" class="admin-form"><input type="hidden" id="editPaperId"><label>Paper title
+                            *<input id="paperTitle" required maxlength="120"
+                                placeholder="e.g. G.C.E. A/L ICT 2025"></label>
+                        <div class="form-row"><label>Subject *<select id="paperSubject"
+                                    required></select></label><label>Year *<input id="paperYear" type="number"
+                                    min="1950" max="2100" required value="2026"></label></div>
+                        <div class="form-row"><label>Level *<select id="paperLevel" required>
+                                    <option>O/L</option>
+                                    <option>A/L</option>
+                                    <option>University</option>
+                                    <option>Other</option>
+                                </select></label><label>Language<select id="paperLanguage">
+                                    <option>English</option>
+                                    <option>Sinhala</option>
+                                    <option>Tamil</option>
+                                </select></label></div><label>Description<input id="paperDescription" maxlength="180"
+                                placeholder="Optional paper details"></label><label>PDF file <input id="paperFile"
+                                type="file" accept="application/pdf,.pdf"><span class="hint">Choose a PDF. For edits,
+                                leave empty to keep the existing file.</span></label>
+                        <div class="form-actions"><button class="btn primary" type="submit" id="savePaperBtn">Add
+                                paper</button><button class="btn outline hidden" type="button" id="cancelEdit">Cancel
+                                edit</button></div>
+                        <p id="paperFormMessage" class="form-message"></p>
+                    </form>
+                    <h3 class="admin-list-title">Current papers</h3>
+                    <div id="adminPaperList" class="admin-list"></div>
+                </section>
+                <section id="subjectAdmin" class="admin-pane hidden">
+                    <h3>Add a subject</h3>
+                    <form id="subjectForm" class="admin-form"><label>Subject name *<input id="newSubjectName" required
+                                maxlength="60" placeholder="e.g. Database Management Systems"></label><label>Icon (emoji
+                            or symbol)<input id="newSubjectIcon" maxlength="4" placeholder="📘"></label><button
+                            class="btn primary" type="submit">Add subject</button>
+                        <p id="subjectMessage" class="form-message"></p>
+                    </form>
+                    <h3 class="admin-list-title">Current subjects</h3>
+                    <div id="adminSubjectList" class="admin-list"></div>
+                    <p class="hint">A subject linked to existing papers cannot be deleted until those papers are
+                        reassigned or removed.</p>
+                </section>
+                <div class="admin-bottom"><button id="exportData" class="btn outline">Export backup JSON</button><label
+                        class="btn outline import-label">Import backup JSON<input id="importData" type="file"
+                            accept="application/json,.json" hidden></label><button id="adminLogout" class="text-btn">Log
+                        out</button></div>
+                <p class="hint">Papers, subjects, and PDF files are stored in Supabase. Admin access is protected by
+                    Supabase Authentication and database security rules.</p>
+            </div>
+        </div>
+    </div>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div><button id="backToTop" class="back-top"
+        aria-label="Back to top">↑</button>
+    <script type="module" src="script.js"></script>
+</body>
+
+</html>
